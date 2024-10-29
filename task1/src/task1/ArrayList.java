@@ -2,7 +2,6 @@ package task1;
 
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Arrays;
 
 public class ArrayList<E extends Comparable<E>> {
     /**
@@ -51,8 +50,14 @@ public class ArrayList<E extends Comparable<E>> {
         return -1;
     }
 
-    private void sortArray(Object[] a, int lo, int hi, Object[] buf, Comparator<? super E> c) {
-        if (lo >= hi) return;
+    /*=============== Merge sort implement ================= */
+
+    private void sortArray(
+        Object[] a, int lo, int hi,
+        Object[] buf, Comparator<? super E> c) {
+        if (lo >= hi) {
+            return;
+        }
 
         int mid = lo + (hi - lo) / 2;
 
@@ -61,11 +66,18 @@ public class ArrayList<E extends Comparable<E>> {
         merge(a, lo, mid, hi, buf, c);
     }
 
-    private void merge(Object[] a, int lo, int mid, int hi, Object[] buf, Comparator<? super E> c) {
+    @SuppressWarnings({"unchecked"})
+    private void merge(
+        Object[] a, int lo, int mid, int hi,
+        Object[] buf, Comparator<? super E> c) {
 
-        for (int i = lo; i <= hi; i++) buf[i] = a[i];
+        for (int i = lo; i <= hi; i++) {
+            buf[i] = a[i];
+        }
+
         int i = lo;
         int j = mid + 1;
+
         for (int k = lo; k <= hi; k++) {
             if (i > mid)
                 a[k] = buf[j++];
@@ -138,6 +150,7 @@ public class ArrayList<E extends Comparable<E>> {
      * @return
      * @throws IndexOutOfBoundsException
      */
+    @SuppressWarnings({"unchecked"})
     public E get(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index > size - 1) {
             throw new IndexOutOfBoundsException(index);
@@ -180,7 +193,7 @@ public class ArrayList<E extends Comparable<E>> {
      * find element in array and remove it.
      */
     public boolean remove(Object o) {
-        var index = find(o);
+        int index = find(o);
         if (index >= 0) {
             try {
                 return remove(index);
